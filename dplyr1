@@ -1,0 +1,28 @@
+wine = read.csv('wine.csv', stringsAsFactors = F, encoding = 'UTF-8')
+install.packages('dplyr')
+install.packages('ggplot2')
+library(dplyr)
+library(ggplot2)
+wine = wine[,-1]
+wine = wine %>% select(-c(description)) 
+wine %>% group_by(country) %>% summarize(count=n()) %>% arrange(desc(count))
+
+selected_countries = wine %>% group_by(country) %>% summarize(count=n()) %>% arrange(desc(count)) %>% top_n(10) %>% select(country)
+selected_countries = as.character(selected_countries$country)
+select_points=wine %>% filter(country %in% selected_countries) %>% select(country, points) %>% arrange(country)
+ggplot(wine, aes(points,price)) + geom_point() + geom_smooth()
+ggplot(select_points, aes(x=reorder(country,points,median),y=points)) + geom_boxplot(aes(fill=country)) + xlab("Country") + ylab("Points") + ggtitle("Distribution of Top 10 Wine Producing Countries") + theme(plot.title = element_text(hjust = 0.5))
+wine %>% filter(!(country %in% selected_countries)) %>% group_by(country) %>%  summarize(median=median(points)) %>% arrange(desc(median)) 
+top=wine %>% group_by(country) %>% summarize(median=median(points)) %>% arrange(desc(median))
+top=as.character(top$country)
+both=intersect(top,selected_countries)
+
+topwine = wine %>% group_by(variety) %>% summarize(number=n()) %>% arrange(desc(number)) %>% top_n(10)
+topwine=as.character(topwine$variety)
+
+wine %>% filter(variety %in% topwine) %>% group_by(variety)%>% summarize(median=median(points)) %>% ggplot(aes(reorder(variety,median),median)) + geom_col(aes(fill=variety)) + xlab('Variety') + ylab('Median Point') + scale_x_discrete(labels=abbreviate)
+
+top15percent=wine %>% arrange(desc(points)) %>% filter(points > quantile(points, prob = 0.85))
+cheapest15percent=wine %>% arrange(price) %>% head(nrow(top15percent))
+goodvalue = intersect(top15percent,cheapest15percent)
+goodvalue

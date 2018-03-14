@@ -1,2 +1,2 @@
-# tutorials
+# Tutorials
 Data Science Dojo Tutorials

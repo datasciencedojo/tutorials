@@ -109,7 +109,6 @@ wine$country = ifelse(wine$designation == "Piedra Feliz", "Chile", wine$country)
 wine$country = ifelse(wine$variety == "Red Blend", "Turkey", wine$country)
 
 #Combining Datasets
-
 #Creating a new subset by total number of rows by country
 newwine = wine  %>% group_by(country) %>% summarize(total = n()) %>% arrange(desc(total))
 
@@ -132,3 +131,6 @@ left
 #Combining two data frames using right join function
 right = right_join(subset1, subset2)
 right
+
+#####End of Code####
+

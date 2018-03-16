@@ -1,0 +1,17 @@
+Guest Cluster: 
+HalJordonCluster
+
+SSH Endpoint for Edge Node:
+R-Server.HalJordonCluster-ssh.azurehdinsight.net:22
+
+Cluster Login Name:
+admin
+
+Cluster Login Password:
+DojoGuest123$
+
+SSH Username:
+sshguest
+
+SSH Password:
+ThisIsATerriblePassword2
